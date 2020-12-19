@@ -1,0 +1,96 @@
+{
+    "timeline": [
+        {
+            "image": "./assets/0000 k-ci.JPG",
+            "duration": 3500,
+            "kenburns": {
+                "from": [
+                    1,
+                    [
+                        0.5,
+                        0.5
+                    ]
+                ],
+                "to": [
+                    0.5,
+                    [
+                        0.5,
+                        0.5
+                    ]
+                ]
+            },
+            "transitionNext": {
+                "duration": 1000
+            }
+        },
+        {
+            "image": "./assets/0001 k-co.JPG",
+            "duration": 3500,
+            "kenburns": {
+                "from": [
+                    0.5,
+                    [
+                        0.5,
+                        0.5
+                    ]
+                ],
+                "to": [
+                    1,
+                    [
+                        0.5,
+                        0.5
+                    ]
+                ]
+            },
+            "transitionNext": {
+                "duration": 1000
+            }
+        },
+        {
+            "image": "./assets/0001 k-co.JPG",
+            "duration": 3500,
+            "kenburns": {
+                "from": [
+                    0.5,
+                    [
+                        0.5,
+                        0.5
+                    ]
+                ],
+                "to": [
+                    1,
+                    [
+                        0.5,
+                        0.5
+                    ]
+                ]
+            },
+            "transitionNext": {
+                "duration": 1000
+            }
+        },
+        {
+            "image": "./assets/0001 k-co.JPG",
+            "duration": 3500,
+            "kenburns": {
+                "from": [
+                    0.5,
+                    [
+                        0.5,
+                        0.5
+                    ]
+                ],
+                "to": [
+                    1,
+                    [
+                        0.5,
+                        0.5
+                    ]
+                ]
+            },
+            "transitionNext": {
+                "duration": 1000
+            }
+        }
+   ]
+}

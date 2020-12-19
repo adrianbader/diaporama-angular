@@ -3,7 +3,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { SlideshowComponent } from './slideshow/slideshow.component';
 
 const routes: Routes = [
-  {path: 'show', component: SlideshowComponent}
+  {path: ':slideIndex', component: SlideshowComponent},
+  {path: '', component: SlideshowComponent},
+  {path: '**', redirectTo: '/'}
 ];
 
 @NgModule({

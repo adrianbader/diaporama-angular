@@ -1,0 +1,12 @@
+:host {
+    display: flex;
+    flex: auto;
+    height: 100%;
+    align-self: stretch;
+}
+div {
+    display: flex;
+    flex: auto;
+    height: 100%;
+    background-color: red;
+}
