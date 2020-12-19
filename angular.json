@@ -33,7 +33,9 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/diaporama/dist/diaporama.js"
+            ]
           },
           "configurations": {
             "production": {
