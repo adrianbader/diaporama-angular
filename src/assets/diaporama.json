@@ -1,7 +1,7 @@
 {
     "timeline": [
         {
-            "image": "./assets/0000 k-ci.JPG",
+            "image": "./0000 k-ci.JPG",
             "duration": 3500,
             "kenburns": {
                 "from": [
@@ -24,7 +24,7 @@
             }
         },
         {
-            "image": "./assets/0001 k-co.JPG",
+            "image": "./0001 k-co.JPG",
             "duration": 3500,
             "kenburns": {
                 "from": [
@@ -47,7 +47,7 @@
             }
         },
         {
-            "image": "./assets/0001 k-co.JPG",
+            "image": "./0001 k-co.JPG",
             "duration": 3500,
             "kenburns": {
                 "from": [
@@ -70,7 +70,7 @@
             }
         },
         {
-            "image": "./assets/0001 k-co.JPG",
+            "image": "./0001 k-co.JPG",
             "duration": 3500,
             "kenburns": {
                 "from": [

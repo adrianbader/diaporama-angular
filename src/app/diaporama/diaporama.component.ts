@@ -1,8 +1,11 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { Location } from '@angular/common'
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { fromEvent, Observable, Subscription } from "rxjs";
+import { applySourceSpanToExpressionIfNeeded } from '@angular/compiler/src/output/output_ast';
+import { DiaporamaConfig } from './diaporama';
+import { DiaporamaConfigService } from './diaporama-config.service';
 declare var Diaporama: any;
 
 @Component({
@@ -11,30 +14,40 @@ declare var Diaporama: any;
   styleUrls: ['./diaporama.component.scss']
 })
 export class DiaporamaComponent implements OnInit {
+  @Input()
+  private startSlideIndex = 0;
+
+  @Input()
+  private path = './assets/';
+
   @ViewChild('diaporama', { static: true })
   div: any;
 
   diaporama: any;
-  startSlideIndex = 0;
 
-  constructor(private httpClient: HttpClient, private route: ActivatedRoute, private location: Location) {
-    const slideIndex = Number(this.route.snapshot.paramMap.get('slideIndex'));
-    if (!isNaN(slideIndex)) {
-      this.startSlideIndex = slideIndex;
-    }
+
+  constructor(private httpClient: HttpClient,    private route: ActivatedRoute, private location: Location, 
+    private diaporamaConfigService: DiaporamaConfigService) {
   }
 
   ngOnInit(): void {
 
-    this.httpClient.get('assets/diaporama.json').subscribe(data => {
+    if (this.route.snapshot.paramMap.get('slideIndex') != null) {
+      const slideIndex = Number(this.route.snapshot.paramMap.get('slideIndex'));
+      if (!isNaN(slideIndex)) {
+        this.startSlideIndex = slideIndex;
+      }
+    }
 
-      this.diaporama = Diaporama(this.div.nativeElement, data, {
+    this.diaporamaConfigService.diaporamaConfig(this.path).subscribe(diaporamaConfig => {
+
+      this.diaporama = Diaporama(this.div.nativeElement, diaporamaConfig, {
         width: this.div.nativeElement.clientWidth,
         height: this.div.nativeElement.clientHeight,
         autoplay: false
       });
       this.diaporama.slide = this.startSlideIndex;
-      this.diaporama.play();
+      //this.diaporama.play();
       this.diaporama.on('slide', (slide: any) => {
         this.location.go(`/${this.diaporama.slide}`);
       })
@@ -44,7 +57,7 @@ export class DiaporamaComponent implements OnInit {
         this.diaporama.height = this.div.nativeElement.clientHeight;
       })
 
-      fromEvent(document.body, 'keydown').subscribe((key:any) => {
+      fromEvent(document.body, 'keydown').subscribe((key: any) => {
         switch (key.which) {
           case 37: // Left
             this.diaporama.prev();
@@ -53,11 +66,11 @@ export class DiaporamaComponent implements OnInit {
             this.diaporama.next();
             break;
           case 32: // Space
-          case 13: // Space
+          case 13: // Enter
             this.diaporama.paused = !this.diaporama.paused;
             break;
         }
-        });
+      });
     });
 
   }
