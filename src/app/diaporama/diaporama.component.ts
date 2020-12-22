@@ -15,18 +15,18 @@ declare var Diaporama: any;
 })
 export class DiaporamaComponent implements OnInit {
   @Input()
-  private startSlideIndex = 0;
+  public startSlideIndex = 0;
 
   @Input()
-  private path = './assets/';
+  public path = './assets/';
 
   @ViewChild('diaporama', { static: true })
-  div: any;
+  private div: any;
 
-  diaporama: any;
+  private diaporama: any;
 
 
-  constructor(private httpClient: HttpClient,    private route: ActivatedRoute, private location: Location, 
+  constructor(private httpClient: HttpClient, private route: ActivatedRoute, private location: Location,
     private diaporamaConfigService: DiaporamaConfigService) {
   }
 
@@ -68,6 +68,9 @@ export class DiaporamaComponent implements OnInit {
           case 32: // Space
           case 13: // Enter
             this.diaporama.paused = !this.diaporama.paused;
+            break;
+          case 27: // Esc
+            this.diaporama.paused = true;
             break;
         }
       });
