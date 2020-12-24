@@ -16,6 +16,7 @@ speed-measure-plugin*.json
 
 # IDEs and editors
 /.idea
+/.vscode
 .project
 .classpath
 .c9/
@@ -44,3 +45,7 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# Assets to debug
+/src/assets/*.JPG
+/src/assets/*.json

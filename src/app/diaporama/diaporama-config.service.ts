@@ -18,7 +18,7 @@ export class DiaporamaConfigService {
   constructor(private httpClient: HttpClient) {
   }
 
-  public diaporamaConfig(path: String): Observable<DiaporamaConfig> {
+  public diaporamaConfig(path: string): Observable<DiaporamaConfig> {
     return concat(
       this.getDiaporamaJson(path).pipe(catchError(() => EMPTY)),
       this.getConfigFromFileJson(path).pipe(catchError(() => EMPTY)))
@@ -38,13 +38,13 @@ export class DiaporamaConfigService {
         }));
   }
 
-  private getConfigFromFileJson(path: String): Observable<DiaporamaConfig> {
+  private getConfigFromFileJson(path: string): Observable<DiaporamaConfig> {
     return this.httpClient.get<FileListConfig>(`${path}files.json`)
       .pipe(
-        map(fileList => this.buildDiaporamaConfig(fileList)));
+        map(fileList => this.buildDiaporamaConfig(path, fileList)));
   }
 
-  private buildDiaporamaConfig(fileList: FileListConfig): DiaporamaConfig {
+  private buildDiaporamaConfig(path: string, fileList: FileListConfig): DiaporamaConfig {
     const timeline: TimelineItem[] = [];
 
     fileList.files.forEach(entry => {
@@ -52,10 +52,10 @@ export class DiaporamaConfigService {
         timeline.push(this.slideEntry(entry));
       }
       if (this.isVideo(entry.name)) {
-        timeline.push(this.videoEntry(entry));
+        timeline.push(this.videoEntry(path, entry));
       }
       if (this.isImage(entry.name)) {
-        timeline.push(this.imageEntry(entry));
+        timeline.push(this.imageEntry(path, entry));
       }
     });
 
@@ -74,9 +74,9 @@ export class DiaporamaConfigService {
     return fileName.includes('t-');
   }
 
-  private imageEntry(entry: FileItem): TimelineImageItem | any {
+  private imageEntry(path: string, entry: FileItem): TimelineImageItem | any {
     return {
-      image: entry.name,
+      image: `${path}${entry.name}`,
       duration: DiaporamaConfigService.imageDuration,
       kenburns: this.kenburns(entry),
       transitionNext: this.transition()
@@ -84,9 +84,9 @@ export class DiaporamaConfigService {
 
   }
 
-  private videoEntry(entry: FileItem): TimelineVideoItem | any {
+  private videoEntry(path: string, entry: FileItem): TimelineVideoItem | any {
     return {
-      video: entry.name,
+      video: `${path}${entry.name}`,
       duration: Math.max(0, entry.videoDurationInSeconds - DiaporamaConfigService.transitionDuration),
       volume: 1,
       loop: false,
