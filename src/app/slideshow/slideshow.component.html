@@ -1,1 +1,3 @@
-<app-diaporama [startSlideIndex]=1></app-diaporama>
+<app-diaporama #diaporamaComponent></app-diaporama>
+<button *ngIf="diaporama.paused" type="button" class="btn btn-light btn-lg play" (click)="playClick()"><i class="bi-play-fill"></i></button>
+

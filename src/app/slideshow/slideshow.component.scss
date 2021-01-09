@@ -1,4 +1,21 @@
 :host {
-    display: flex;
-    flex: auto;   
+  display: flex;
+  flex: auto;
+}
+
+.material-icons.md-48 {
+  font-size: 48px;
+}
+
+.play {
+  box-shadow: 0 0 50px 20px black, 0 0 50px 40px white;
+  position: absolute;
+  top: 50%; /* position the top  edge of the element at the middle of the parent */
+  left: 50%; /* position the left edge of the element at the middle of the parent */
+
+  transform: translate(-50%, -50%);
+}
+
+.play:hover {
+  box-shadow: 0 0 30px 10px black, 0 0 30px 20px white;
 }

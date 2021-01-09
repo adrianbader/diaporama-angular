@@ -21,8 +21,7 @@ export class DiaporamaComponent implements OnInit {
   @ViewChild('diaporama', {static: true})
   private div: any;
 
-  private diaporama: any;
-
+  public diaporama: any;
 
   constructor(private httpClient: HttpClient, private route: ActivatedRoute, private router: Router,
               private diaporamaConfigService: DiaporamaConfigService) {
