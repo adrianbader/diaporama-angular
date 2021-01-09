@@ -1,8 +1,17 @@
-import { concat, EMPTY, Observable } from 'rxjs';
-import { catchError, first, map } from 'rxjs/operators';
-import { DiaporamaConfig, FileListConfig, TimelineItem, FileItem, TimelineImageItem, TimelineVideoItem, TimelineCanvasItem } from './diaporama';
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import {concat, EMPTY, Observable} from 'rxjs';
+import {catchError, first, map} from 'rxjs/operators';
+import {
+  DiaporamaConfig,
+  FileItem,
+  FileListConfig,
+  TimelineCanvasItem,
+  TimelineImageItem,
+  TimelineItem,
+  TimelineVideoItem
+} from './diaporama';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +24,13 @@ export class DiaporamaConfigService {
   private static videoFileEndings = ['.MOV', 'MP4'];
   private static imageFileEndings = ['.JPG', 'PNG', 'TIF', 'TIFF'];
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private router: Router) {
   }
 
-  public diaporamaConfig(path: string): Observable<DiaporamaConfig> {
+  public diaporamaConfig(): Observable<DiaporamaConfig> {
+    let urlTree = this.router.parseUrl(this.router.url);
+    urlTree.queryParams = {};
+    const path = `${urlTree.toString()}/`;
     return concat(
       this.getDiaporamaJson(path).pipe(catchError(() => EMPTY)),
       this.getConfigFromFileJson(path).pipe(catchError(() => EMPTY)))
@@ -32,6 +44,9 @@ export class DiaporamaConfigService {
           data.timeline.forEach((item: any) => {
             if (item.image) {
               item.image = `${path}${item.image}`;
+            }
+            if (item.video) {
+              item.video = `${path}${item.video}`;
             }
           })
           return data;

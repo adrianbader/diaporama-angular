@@ -1,11 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
-import { Location } from '@angular/common'
-import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
-import { fromEvent, Observable, Subscription } from "rxjs";
-import { applySourceSpanToExpressionIfNeeded } from '@angular/compiler/src/output/output_ast';
-import { DiaporamaConfig } from './diaporama';
-import { DiaporamaConfigService } from './diaporama-config.service';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {ActivatedRoute, Router} from '@angular/router';
+import {fromEvent} from "rxjs";
+import {DiaporamaConfigService} from './diaporama-config.service';
+
 declare var Diaporama: any;
 
 @Component({
@@ -20,26 +18,26 @@ export class DiaporamaComponent implements OnInit {
   @Input()
   public path = './assets/';
 
-  @ViewChild('diaporama', { static: true })
+  @ViewChild('diaporama', {static: true})
   private div: any;
 
   private diaporama: any;
 
 
-  constructor(private httpClient: HttpClient, private route: ActivatedRoute, private location: Location,
-    private diaporamaConfigService: DiaporamaConfigService) {
+  constructor(private httpClient: HttpClient, private route: ActivatedRoute, private router: Router,
+              private diaporamaConfigService: DiaporamaConfigService) {
   }
 
   ngOnInit(): void {
 
-    if (this.route.snapshot.paramMap.get('slideIndex') != null) {
-      const slideIndex = Number(this.route.snapshot.paramMap.get('slideIndex'));
+    if (this.route.snapshot.queryParamMap.get('slideIndex') != null) {
+      const slideIndex = Number(this.route.snapshot.queryParamMap.get('slideIndex'));
       if (!isNaN(slideIndex)) {
         this.startSlideIndex = slideIndex;
       }
     }
 
-    this.diaporamaConfigService.diaporamaConfig(this.path).subscribe(diaporamaConfig => {
+    this.diaporamaConfigService.diaporamaConfig().subscribe(diaporamaConfig => {
 
       this.diaporama = Diaporama(this.div.nativeElement, diaporamaConfig, {
         width: this.div.nativeElement.clientWidth,
@@ -49,7 +47,13 @@ export class DiaporamaComponent implements OnInit {
       this.diaporama.slide = this.startSlideIndex;
       //this.diaporama.play();
       this.diaporama.on('slide', (slide: any) => {
-        this.location.go(`/${this.diaporama.slide}`);
+        this.router.navigate(
+          [],
+          {
+            relativeTo: this.route,
+            queryParams: {slideIndex: this.diaporama.slide},
+            queryParamsHandling: 'merge'
+          });
       })
 
       fromEvent(window, 'resize').subscribe(() => {

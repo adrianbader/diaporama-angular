@@ -1,11 +1,9 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { SlideshowComponent } from './slideshow/slideshow.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {SlideshowComponent} from './slideshow/slideshow.component';
 
 const routes: Routes = [
-  {path: ':slideIndex', component: SlideshowComponent},
-  {path: '', component: SlideshowComponent},
-  {path: '**', redirectTo: '/'}
+  {path: '**', component: SlideshowComponent}
 ];
 
 @NgModule({
