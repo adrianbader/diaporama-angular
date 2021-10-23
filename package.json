@@ -24,6 +24,7 @@
     "diaporama": "^2.2.0",
     "express": "^4.17.1",
     "get-video-duration": "^3.0.2",
+    "image-size": "^1.0.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
