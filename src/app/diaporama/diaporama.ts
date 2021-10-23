@@ -29,4 +29,6 @@ export interface FileItem {
   name: string;
   videoDurationInSeconds: number;
   slideText: string;
+  // may be used to set effect rather than take it from file name
+  effect: string;
 }

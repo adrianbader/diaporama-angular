@@ -148,20 +148,50 @@ export class DiaporamaConfigService {
   }
 
   private kenburns(entry: FileItem): any {
-    if (entry.name.includes('k-ci')) {
+    const effect = entry.effect ? entry.effect : entry.name;
+    if (effect.includes('k-ch u')) {
+      return {
+        from: [1, [0.5, 0]],
+        to: [1, [0.5, 1]]
+      };
+    } else if (effect.includes('k-ch d')) {
+      return {
+        from: [1, [0.5, 1]],
+        to: [1, [0.5, 0]]
+      };
+    } else if (effect.includes('k-cih u')) {
+      return {
+        from: [1, [0.5, 0]],
+        to: [0.5, [0.5, 1]]
+      };
+    } else if (effect.includes('k-cih d')) {
+      return {
+        from: [1, [0.5, 1]],
+        to: [0.5, [0.5, 0]]
+      };
+    } else if (effect.includes('k-coh u')) {
+      return {
+        from: [0.5, [0.5, 0]],
+        to: [1, [0.5, 1]]
+      };
+    } else if (effect.includes('k-coh d')) {
+      return {
+        from: [0.5, [0.5, 1]],
+        to: [1, [0.5, 0]]
+      };
+    } else if (effect.includes('k-ci')) {
       return {
         from: [1, [0.5, 0.5]],
         to: [0.5, [0.5, 0.5]]
       };
-    }
-
-    if (entry.name.includes('k-co')) {
+    } else if (effect.includes('k-co')) {
       return {
         from: [0.5, [0.5, 0.5]],
         to: [1, [0.5, 0.5]]
       };
 
     }
+
     return undefined;
   }
 
