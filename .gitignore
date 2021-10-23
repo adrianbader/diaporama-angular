@@ -48,4 +48,7 @@ Thumbs.db
 
 # Assets to debug
 /src/assets/*.JPG
+/src/assets/*.jpg
+/src/assets/*.mp4
+/src/assets/*.MP4
 /src/assets/*.json

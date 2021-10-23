@@ -11,7 +11,7 @@ import {
 } from './diaporama';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +28,7 @@ export class DiaporamaConfigService {
   }
 
   public diaporamaConfig(): Observable<DiaporamaConfig> {
-    let urlTree = this.router.parseUrl(this.router.url);
+    const urlTree = this.router.parseUrl(this.router.url);
     urlTree.queryParams = {};
     const path = `${urlTree.toString()}/`;
     return concat(
@@ -37,7 +37,7 @@ export class DiaporamaConfigService {
       .pipe(first());
   }
 
-  private getDiaporamaJson(path: String): Observable<DiaporamaConfig> {
+  private getDiaporamaJson(path: string): Observable<DiaporamaConfig> {
     return this.httpClient.get<DiaporamaConfig>(`${path}diaporama.json`)
       .pipe(
         map(data => {
@@ -48,7 +48,7 @@ export class DiaporamaConfigService {
             if (item.video) {
               item.video = `${path}${item.video}`;
             }
-          })
+          });
           return data;
         }));
   }
@@ -78,11 +78,13 @@ export class DiaporamaConfigService {
   }
 
   private isVideo(fileName: string): boolean {
-    return DiaporamaConfigService.videoFileEndings.find(ending => fileName.toUpperCase().endsWith(ending.toUpperCase())) != undefined;
+    return DiaporamaConfigService.videoFileEndings
+      .find(ending => fileName.toUpperCase().endsWith(ending.toUpperCase())) !== undefined;
   }
 
   private isImage(fileName: string): boolean {
-    return DiaporamaConfigService.imageFileEndings.find(ending => fileName.toUpperCase().endsWith(ending.toUpperCase())) != undefined;
+    return DiaporamaConfigService.imageFileEndings
+      .find(ending => fileName.toUpperCase().endsWith(ending.toUpperCase())) !== undefined;
   }
 
   private isSlide(fileName: string): boolean {
@@ -95,8 +97,7 @@ export class DiaporamaConfigService {
       duration: DiaporamaConfigService.imageDuration,
       kenburns: this.kenburns(entry),
       transitionNext: this.transition()
-    }
-
+    };
   }
 
   private videoEntry(path: string, entry: FileItem): TimelineVideoItem | any {
@@ -107,47 +108,56 @@ export class DiaporamaConfigService {
       loop: false,
       kenburns: this.kenburns(entry),
       transitionNext: this.transition()
-    }
+    };
   }
 
   private slideEntry(entry: FileItem): TimelineCanvasItem | any {
     const end = entry.name.lastIndexOf('.');
     const start = entry.name.indexOf('t-') + 2;
 
+    const entries = entry.name.substr(start, end - start).split('--');
+    let yStartOffset = 300 - (entries.length * 80 / 2) + 40;
+    const fillTextEntries = entries.map(textEntry => {
+      const line = ['fillText', textEntry, 400, yStartOffset];
+      yStartOffset += 80;
+      return line;
+    });
+
     return {
       slide2d: {
-        background: "#EDA",
+        background: '#EDA',
         size: [800, 600],
         draws: [
-          //              ["drawImage", `${diaporamaPathBeforeRef}${fileName}`, 0, 0, 800, 600],
-          { font: "bold 80px sans-serif", fillStyle: "#000", textBaseline: "middle", "textAlign": "center" },
-          ["fillText", entry.name.substr(start, end), 400, 300]
+          {font: 'bold 80px sans-serif', fillStyle: '#000', textBaseline: 'middle', textAlign: 'center'},
+          fillTextEntries
         ]
       },
       duration: DiaporamaConfigService.slideDuration,
       transitionNext: this.transition()
-    }
+    };
   }
 
 
-  private transition() {
+  private transition(): any {
     return {
       duration: DiaporamaConfigService.transitionDuration
     };
   }
 
-  private kenburns(entry: FileItem) {
+  private kenburns(entry: FileItem): any {
     if (entry.name.includes('k-ci')) {
       return {
         from: [1, [0.5, 0.5]],
         to: [0.5, [0.5, 0.5]]
-      }
+      };
     }
+
     if (entry.name.includes('k-co')) {
       return {
         from: [0.5, [0.5, 0.5]],
         to: [1, [0.5, 0.5]]
-      }
+      };
+
     }
     return undefined;
   }

@@ -11,11 +11,10 @@ The Node.js part generates server side a file listing of requested folder and se
 Run `npm start` to build angular app to dist folder and start node.js app to serve the angular app.
 Navigate to `http://localhost:8080` to open application.
 
-## Development server of Angular App
+## Development
+### Angular App
+* copy jpg files and/or mp4 files and its files.json to assets folder
+* run `npm run ng serve`
+* open http://localhost:4200/assets in your browser
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Angular code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
