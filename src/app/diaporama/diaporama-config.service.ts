@@ -30,7 +30,10 @@ export class DiaporamaConfigService {
   public diaporamaConfig(): Observable<DiaporamaConfig> {
     const urlTree = this.router.parseUrl(this.router.url);
     urlTree.queryParams = {};
-    const path = `${urlTree.toString()}/`;
+    let path = urlTree.toString();
+    if (path !== '/') {
+      path = `${urlTree.toString()}/`;
+    }
     return concat(
       this.getDiaporamaJson(path).pipe(catchError(() => EMPTY)),
       this.getConfigFromFileJson(path).pipe(catchError(() => EMPTY)))
