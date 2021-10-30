@@ -7,7 +7,7 @@ const imageSize = require('image-size');
 
 
 const appRootFolder = './dist/slideshow';
-const slideShowRootFolder = '/home/adrian/opteron/documents/03_Fotos/01_Fotos/03 Ferien/2021-09 Lanzarote/';
+const slideShowRootFolder = process.env.ROOT_DIR;
 
 const ipaddress = "0.0.0.0";
 const port = 8080;
@@ -48,6 +48,10 @@ async function videoDuration(file) {
 }
 
 try {
+  if (!slideShowRootFolder) {
+    console.error("ROOT_DIR not specified!");
+    return 1;
+  }
   const app = express();
 
   const processRequest = function (req, res) {
