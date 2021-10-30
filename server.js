@@ -48,12 +48,20 @@ async function videoDuration(file) {
 }
 
 try {
-  var app = express();
+  const app = express();
 
-  var processRequest = function (req, res) {
-    var url = path.extname(req.params[0]) ? req.params[0] : 'index.html';
+  const processRequest = function (req, res) {
+
+    const buildStoreAndSendFilesJson = function () {
+      buildFilesList(`${slideShowRootFolder}/${path.dirname(url)}`).then(data => {
+        fs.writeFileSync(`${slideShowRootFolder}/${path.dirname(url)}/files.json`, JSON.stringify(data, null, 2));
+        res.send(data)
+      });
+    }
+
+    const url = path.extname(req.params[0]) ? req.params[0] : 'index.html';
     if (url.endsWith('.html') || url.endsWith('.css') || url.endsWith('.js') || url.endsWith('.map') || url.endsWith('.ico')) {
-      var filename = path.basename(url);
+      const filename = path.basename(url);
       if (fs.existsSync(`${appRootFolder}/${filename}`)) {
         res.sendFile(filename, {root: appRootFolder}, function (err) {
           if (err) {
@@ -66,14 +74,17 @@ try {
       }
     } else {
       if (fs.existsSync(`${slideShowRootFolder}/${url}`)) {
-        res.sendFile(url, {root: slideShowRootFolder}, function (err) {
-          if (err) {
-//                        res.status(500).send(err);
-            console.log('%s: ERROR - %s', Date(Date.now()), err);
-          }
-        });
+        if (path.basename(url) === 'files.json' && req.query['forceFileScan'] !== undefined) {
+          buildStoreAndSendFilesJson();
+        } else {
+          res.sendFile(url, {root: slideShowRootFolder}, function (err) {
+            if (err) {
+              console.log('%s: ERROR - %s', Date(Date.now()), err);
+            }
+          });
+        }
       } else if (path.basename(url) === 'files.json') {
-        buildFilesList(`${slideShowRootFolder}/${path.dirname(url)}`).then(data => res.send(data));
+        buildStoreAndSendFilesJson();
       } else {
         res.status(404).send('Not found');
       }

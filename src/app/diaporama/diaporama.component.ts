@@ -28,7 +28,7 @@ export class DiaporamaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    let forceFileScan = false;
     if (this.route.snapshot.queryParamMap.get('slideIndex') != null) {
       const slideIndex = Number(this.route.snapshot.queryParamMap.get('slideIndex'));
       if (!isNaN(slideIndex)) {
@@ -36,7 +36,11 @@ export class DiaporamaComponent implements OnInit {
       }
     }
 
-    this.diaporamaConfigService.diaporamaConfig().subscribe(diaporamaConfig => {
+    if (this.route.snapshot.queryParamMap.get('forceFileScan') != null) {
+      forceFileScan = true;
+    }
+
+    this.diaporamaConfigService.diaporamaConfig$(forceFileScan).subscribe(diaporamaConfig => {
 
       this.diaporama = Diaporama(this.div.nativeElement, diaporamaConfig, {
         width: this.div.nativeElement.clientWidth,

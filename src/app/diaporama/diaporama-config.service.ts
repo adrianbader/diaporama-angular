@@ -27,7 +27,7 @@ export class DiaporamaConfigService {
   constructor(private httpClient: HttpClient, private router: Router) {
   }
 
-  public diaporamaConfig(): Observable<DiaporamaConfig> {
+  public diaporamaConfig$(forceFileScan: boolean): Observable<DiaporamaConfig> {
     const urlTree = this.router.parseUrl(this.router.url);
     urlTree.queryParams = {};
     let path = urlTree.toString();
@@ -36,7 +36,7 @@ export class DiaporamaConfigService {
     }
     return concat(
       this.getDiaporamaJson(path).pipe(catchError(() => EMPTY)),
-      this.getConfigFromFileJson(path).pipe(catchError(() => EMPTY)))
+      this.getConfigFromFileJson(path, forceFileScan).pipe(catchError(() => EMPTY)))
       .pipe(first());
   }
 
@@ -56,8 +56,8 @@ export class DiaporamaConfigService {
         }));
   }
 
-  private getConfigFromFileJson(path: string): Observable<DiaporamaConfig> {
-    return this.httpClient.get<FileListConfig>(`${path}files.json`)
+  private getConfigFromFileJson(path: string, forceFileScan: boolean): Observable<DiaporamaConfig> {
+    return this.httpClient.get<FileListConfig>(`${path}files.json${forceFileScan ? '?forceFileScan' : ''}`)
       .pipe(
         map(fileList => this.buildDiaporamaConfig(path, fileList)));
   }
