@@ -18,16 +18,22 @@ import {Router} from '@angular/router';
 })
 export class DiaporamaConfigService {
 
-  private static imageDuration = 3500;
-  private static slideDuration = 4000;
   private static transitionDuration = 1000;
   private static videoFileEndings = ['.MOV', 'MP4'];
   private static imageFileEndings = ['.JPG', 'PNG', 'TIF', 'TIFF'];
 
+  private slideDuration = 4000;
+  private imageDuration = 5000;
+
   constructor(private httpClient: HttpClient, private router: Router) {
   }
 
-  public diaporamaConfig$(forceFileScan: boolean): Observable<DiaporamaConfig> {
+  public diaporamaConfig$(forceFileScan: boolean, delay: number): Observable<DiaporamaConfig> {
+    if (delay) {
+      this.imageDuration = delay;
+      this.slideDuration = delay;
+    }
+
     const urlTree = this.router.parseUrl(this.router.url);
     urlTree.queryParams = {};
     let path = urlTree.toString();
@@ -98,7 +104,7 @@ export class DiaporamaConfigService {
   private imageEntry(path: string, entry: FileItem, randomOption: RandomOption): any {
     return {
       image: `${path}${entry.name}`,
-      duration: DiaporamaConfigService.imageDuration,
+      duration: this.imageDuration,
       kenburns: this.kenburns(entry, randomOption),
       transitionNext: this.transition()
     };
@@ -136,7 +142,7 @@ export class DiaporamaConfigService {
           fillTextEntries
         ]
       },
-      duration: DiaporamaConfigService.slideDuration,
+      duration: this.slideDuration,
       transitionNext: this.transition()
     };
   }
@@ -156,7 +162,7 @@ export class DiaporamaConfigService {
       .find(effectString => stringContainingEffect.includes(effectString));
 
     if (!kenburnsOption) {
-      kenburnsOption = this.buildRandomKenburnsOption(entry, randomOption);
+      // kenburnsOption = this.buildRandomKenburnsOption(entry, randomOption);
     }
 
     if (!kenburnsOption) {

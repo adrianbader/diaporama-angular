@@ -40,7 +40,9 @@ export class DiaporamaComponent implements OnInit {
       forceFileScan = true;
     }
 
-    this.diaporamaConfigService.diaporamaConfig$(forceFileScan).subscribe(diaporamaConfig => {
+    const imageDelay: number = Number(this.route.snapshot.queryParamMap.get('delay'));
+
+    this.diaporamaConfigService.diaporamaConfig$(forceFileScan, imageDelay).subscribe(diaporamaConfig => {
 
       this.diaporama = Diaporama(this.div.nativeElement, diaporamaConfig, {
         width: this.div.nativeElement.clientWidth,
