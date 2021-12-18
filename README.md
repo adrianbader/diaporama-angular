@@ -25,3 +25,10 @@ to `http://localhost:8080` to open application.
 
 * `forceFileScan`: rebuild files.json
 * `delay`: display time in ms of images and slides
+
+## Docker
+* Note: do not forget to build the angular app with `ng build` before creating the docker image!
+* build the docker image: execute `docker build . -t angular-diaporama` from project root directory
+* the image may be exported from the docker registry to a file: `docker save angular-diaporama:latest | gzip > angular-diaporama.tar.gz`
+* the image may be imported into the docker registry: `docker load < angular-diaporama.tar.gz`
+* run the image: `sudo docker run -d --restart always -p 8080:8008 -e ROOT_DIR=/data -v "/home/<your-foto-folder>":/data angular-diaporama`
