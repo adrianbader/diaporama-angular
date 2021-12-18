@@ -1,0 +1,15 @@
+:host {
+  position: absolute;
+  width: 100%;
+  padding: 10px;
+  div {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: white;
+    opacity: 0;
+  }
+
+  div:hover {
+    opacity: 0.8;
+  }
+}
