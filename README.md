@@ -31,4 +31,4 @@ to `http://localhost:8080` to open application.
 * build the docker image: execute `docker build . -t angular-diaporama` from project root directory
 * the image may be exported from the docker registry to a file: `docker save angular-diaporama:latest | gzip > angular-diaporama.tar.gz`
 * the image may be imported into the docker registry: `docker load < angular-diaporama.tar.gz`
-* run the image: `sudo docker run -d --restart always -p 8080:8008 -e ROOT_DIR=/data -v "/home/<your-foto-folder>":/data angular-diaporama`
+* run the image: `docker run -d --restart always -p 8080:8008 -e ROOT_DIR=/data -v "/home/<your-foto-folder>":/data angular-diaporama`
